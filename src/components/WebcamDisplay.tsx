@@ -8,12 +8,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea, CardActions, Typography } from '@mui/material';
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const WebCamDisplay = () => {
+  const navigate=useNavigate();
   const webcam = useRef<Webcam>(null);
   const [imgSrc, setImgSrc] = React.useState(null);
   const [isTaken, setIsTaken] = React.useState(false);
   const [phrase,SetPhrase]=React.useState("Hello do you want a coffee ? ");
+  const [needRegister, setNeedRegister]=React.useState(false);
 
   async function Request(img:string) {
     const requestOptions = {
@@ -36,19 +39,18 @@ export const WebCamDisplay = () => {
       var user=data.user;
       if(user==null){
         if(responseAndStatus.statusMessage=="unregistered"){
-            var registerLink=<a href="/register">Register</a>;
-            //modify
+            setNeedRegister(true);
             SetPhrase("You are not registered to cafy, please register");
         }
         if(responseAndStatus.statusMessage=="no face"){
-          SetPhrase("No face detected, please put your mask temporarly.");
+          SetPhrase("No face detected, think to take of your mask or to put it under your mouth temporarly");
       }
       }
       switch(responseAndStatus.statusMessage){
         case "success":
           if(user.firstname!=null && user.lastname!=null && user.favouriteCoffee!=null){
             var fav=user.favouriteCoffee;
-            var name=user.firstname+" "+data.lastname;
+            var name=user.firstname+" "+user.lastname;
             SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
           }
           break;
@@ -76,7 +78,6 @@ export const WebCamDisplay = () => {
     } catch (error) {
       console.log(error);
       SetPhrase("No face detected, think to take of your mask or to put it under your mouth temporarly");
-      //return false;
     }
 
   }
@@ -120,6 +121,14 @@ export const WebCamDisplay = () => {
     <>
       <ResponsiveAppBar/>
       <h2>{phrase}<CoffeeIcon fontSize="large"/></h2>
+      {needRegister && 
+        (
+          <div>
+            <br/>
+            <Button variant="contained" onClick={()=>navigate("/register")}>Register</Button>
+          </div>
+        )
+      }
       <Webcam audio={false} ref={webcam} screenshotFormat="image/jpeg" height={"420"} />
       <br/>
       {!isTaken && 

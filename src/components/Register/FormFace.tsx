@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
+import Spinner from "../Spinner";
 
 const imagesUnsplashFaces: any=[
   "https://media.istockphoto.com/photos/waist-up-portrait-of-lady-in-neutral-background-picture-id492654062?b=1&k=20&m=492654062&s=170667a&w=0&h=56MBsBFnUpg7Y-gsLEV5LGe-Hkqfyt2s_NHpIEygqY8=",
@@ -29,9 +30,11 @@ export const FormFace = (props:BasicFormProps) => {
   const webcam = useRef<Webcam>(null);
   const navigate=useNavigate();
   const [imgSrc, setImgSrc] = React.useState(null);
-  const [phrase,SetPhrase]=React.useState("Hello we will take pics of you");
+  const [phrase,SetPhrase]=React.useState("We will take pictures of your : Be neutral");
   const [state,setState]=React.useState(1);
   const [imageState,setImageState]=React.useState(0);
+  const [spinnerState,setSpinnerState]=React.useState(false);
+  const [btnDisabled,setBtnDisabled]=React.useState(false);
   
   async function Request(user:User) {
     const requestOptions = {
@@ -48,16 +51,30 @@ export const FormFace = (props:BasicFormProps) => {
     const response = await fetch('https://localhost:44392/api/user/register', requestOptions);
     const data = await response.json();
     console.log(data);
-    if(data.status=="success"){
-      console.log("success");
-      SetPhrase("Perfect, you can test Cafy :-) ");
-      setTimeout(()=>{
-        navigate('/cafy');
-      },200);
-    }else{
-      SetPhrase("PROBLEM  = "+data.status+" CODE "+data.statusMessage);
+    var message=data.message;
+    switch(message){
+      case "success":
+        setTimeout(()=>{
+          navigate('/cafy');
+        },4000);
+        break;
+      
+      case "error mail":
+        SetPhrase("An error occured due to mail");
+        break;
+
+      case "servor":
+        SetPhrase("A servor error occured, please try again in a few moment");
+        break;
+
+      case "bad request":
+        SetPhrase("Something wrent wrong, try again");
+        break;
+
+      case "empty request":
+        SetPhrase("Please fill the register correctly");
+        break;
     }
-    //SetPhrase(response);
   }
 
   function capitalize(s : string)
@@ -87,12 +104,14 @@ export const FormFace = (props:BasicFormProps) => {
 
   function captureWithTimeout(amount:number,timeoutStep:number,phrase:string,currentState:number){
     SetPhrase("Get ready : "+(timeoutStep/1000)+" seconds left");
+    setBtnDisabled(true);
     setTimeout(()=>{
       for(let i=0;i<amount;i++){
         setTimeout(()=>{
           capture();
           if(i==9){
             SetPhrase(phrase);
+            setBtnDisabled(false);
           }
         },200)
         clearTimeout();
@@ -110,28 +129,26 @@ export const FormFace = (props:BasicFormProps) => {
       navigate("/register");
     }
     if(webcam.current?.stream!=null){
-      console.log("State "+state);
       switch(state){
         case 1:
-          SetPhrase("Be neutral");
-          captureWithTimeout(20,5000,"Smile",state);
+          captureWithTimeout(20,3000,"Smile",state);
           break;
         case 2:
-          captureWithTimeout(20,5000,"Make a sad face",state);
+          captureWithTimeout(20,3000,"Make a sad face",state);
           break;
 
         case 3:
-            captureWithTimeout(20,5000,"Smile with your mouth open",state);
+            captureWithTimeout(20,3000,"Smile with your mouth open",state);
             break;
         
         case 4 :
-            captureWithTimeout(20,5000,"With your eyebrows upper",state);
+            captureWithTimeout(20,3000,"With your eyebrows upper",state);
             break;
         case 5 :
-            captureWithTimeout(20,5000,"Thank you that's perfetct ",state);
+            captureWithTimeout(20,3000,"Thank you that's perfetct ",state);
             Request(props.user);
-            console.log("PICS :"+props.user.pictures.length);
             SetPhrase("Loading...");
+            setSpinnerState(true);
             break;
 
       }
@@ -152,6 +169,11 @@ export const FormFace = (props:BasicFormProps) => {
       <h2>{phrase}<CoffeeIcon fontSize="large"/></h2>
 
       <Grid container spacing={2} justifyContent="center">
+        {spinnerState && 
+          (<Grid item xs={12} md={12}>
+            <Spinner/>
+          </Grid>)
+        }
         {state<6 && (<Grid item xs={12} md={6}>
           <img src={imagesUnsplashFaces[imageState]} height={"420"} />
         </Grid>)}
@@ -161,7 +183,7 @@ export const FormFace = (props:BasicFormProps) => {
       </Grid>
       
       <br/>
-      {state<6 &&
+      {state<6 && !btnDisabled  &&
         <Button variant="contained" onClick={captureTotal}>Start shooting</Button>
       }
     </>

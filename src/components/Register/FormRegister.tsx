@@ -55,6 +55,8 @@ export const FormRegister=(props:BasicFormProps)=>{
         navigate('/register/face');
     }
 
+    //FAIRE VERIF EMAIL
+
     return (
         <>
             <ResponsiveAppBar/>
