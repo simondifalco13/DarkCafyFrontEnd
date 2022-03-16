@@ -4,16 +4,14 @@ import Webcam from "react-webcam";
 import Button from '@mui/material/Button';
 import CoffeeIcon from '@mui/icons-material/Coffee';
 import ResponsiveAppBar from "./ResponsiveAppBar";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea, CardActions, Typography } from '@mui/material';
+import { useNavigate } from "react-router-dom";
 
 export const WebCamDisplay = () => {
   const webcam = useRef<Webcam>(null);
   const [imgSrc, setImgSrc] = React.useState(null);
   const [isTaken, setIsTaken] = React.useState(false);
   const [phrase,SetPhrase]=React.useState("Hello do you want a coffee ? ");
+  const navigate = useNavigate();
 
   async function Request(img:string) {
     const requestOptions = {
@@ -59,7 +57,7 @@ export const WebCamDisplay = () => {
         const imageSrc = webcam.current.getScreenshot() ;
         var base64=getBase64WithoutHeaders(imageSrc);
         SetPhrase("Loading...");
-        Request(base64);
+        //Request(base64);
         // var result=await Request(base64);
         // if(result){
         //    //SI REQUEST RENVOIT TRUE
@@ -72,6 +70,7 @@ export const WebCamDisplay = () => {
     }else{
       SetPhrase("Your camera has not been authorized.");
     }
+    navigate("/startcall");
   }, [webcam, setImgSrc]);
 
     

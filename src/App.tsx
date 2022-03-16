@@ -1,30 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { WebCamDisplay } from './components/WebcamDisplay';
 import { FormEsp } from './components/Register/FormEsp';
-import ResponsiveAppBar from './components/ResponsiveAppBar';
 import { BrowserRouter as Router,Routes, Route } from 'react-router-dom';
 import { Welcome } from './components/Welcome';
 import { User } from './models/User';
 import { FormRegister } from './components/Register/FormRegister';
 import { FormFace } from './components/Register/FormFace';
-
-
-
-
+import { StartCall } from './components/StartCall';
 
 function App() {
+  // const [user,setUser]=React.useState<User>({
+  //   id : "",
+  //   tagId: "",
+  //   tagName: "",
+  //   firstname: "",
+  //   lastname: "",
+  //   mail: "",
+  //   favouriteCoffee: "",
+  //   password:"",
+  //   pictures: []
+  // });
   const [user,setUser]=React.useState<User>({
-    id : "",
-    tagId: "",
-    tagName: "",
-    firstname: "",
-    lastname: "",
-    mail: "",
-    favouriteCoffee: "",
-    password:"",
-    pictures: []
+    id : "1",
+    tagId: "3425-ad15",
+    tagName: "sarah",
+    firstname: "sarah",
+    lastname: "coquereau",
+    mail: "sarah@gmail.com",
+    favouriteCoffee: "Long",
+    password:"zzzz",
+    pictures: [],
+    userId :"",
+    credential:""
   });
   return (
     <div className="App">
@@ -36,14 +44,13 @@ function App() {
               <Route path="/admin/esp" element={<FormEsp />} />
               <Route path="/register" element={<FormRegister user={user} setUser={setUser} />}/>
               <Route path="/register/face" element={<FormFace user={user} setUser={setUser} />}/>
+              <Route path="/startcall" element={<StartCall user={user} setUser={setUser}/>}/>
             </Routes>
           </Router>
     </div>
     
   );
 }
-
-
 
 const constraints = {
   audio: false,
@@ -57,7 +64,7 @@ async function init() {
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
       //handleSuccess(stream);
   } catch (e) {
-     console.log(e);
+    console.log(e);
   }
 }
 

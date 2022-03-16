@@ -4,8 +4,6 @@ import CoffeeMakerIcon from '@mui/icons-material/CoffeeMaker';
 import "../css/welcome.css";
 import { Button, Grid } from "@mui/material";
 import { Navigate, useNavigate } from "react-router-dom";
-import PresentationCard from "./Cards/PresentationCard";
-import BasicPresentation from "../models/BasicPresentation";
 import Presentation from "./Presentation";
 
 interface BasicPresentationProps{
