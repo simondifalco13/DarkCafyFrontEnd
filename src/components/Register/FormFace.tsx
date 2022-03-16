@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import SentimentNeutralIcon from '@mui/icons-material/SentimentNeutral';
-import Spinner from "../Spinner";
+import Spinner from "../SpinnerMui";
 
 const imagesUnsplashFaces: any=[
   "https://media.istockphoto.com/photos/waist-up-portrait-of-lady-in-neutral-background-picture-id492654062?b=1&k=20&m=492654062&s=170667a&w=0&h=56MBsBFnUpg7Y-gsLEV5LGe-Hkqfyt2s_NHpIEygqY8=",

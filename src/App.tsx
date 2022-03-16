@@ -9,6 +9,7 @@ import { Welcome } from './components/Welcome';
 import { User } from './models/User';
 import { FormRegister } from './components/Register/FormRegister';
 import { FormFace } from './components/Register/FormFace';
+import GlobalComposite from './components/Teams/GlobalComposite';
 
 
 
@@ -37,6 +38,7 @@ function App() {
               <Route path="/admin/esp" element={<FormEsp />} />
               <Route path="/register" element={<FormRegister user={user} setUser={setUser} />}/>
               <Route path="/register/face" element={<FormFace user={user} setUser={setUser} />}/>
+              <Route path="/call" element={<GlobalComposite/>}/>
             </Routes>
           </Router>
     </div>
