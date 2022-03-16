@@ -89,7 +89,7 @@ export const FormRegister=(props:BasicFormProps)=>{
                                 <MenuItem value={"coffee"}>Coffee (simple)</MenuItem>
                                 <MenuItem value={"long"}>Long</MenuItem>
                                 <MenuItem value={"americano"}>Americano</MenuItem>
-                                <MenuItem value={"espressodouble"}>Double Espresso</MenuItem>
+                                <MenuItem value={"double_espresso"}>Double Espresso</MenuItem>
                                 <MenuItem value={"espresso"}>Espresso</MenuItem>
                             </Select>
                         </FormControl>

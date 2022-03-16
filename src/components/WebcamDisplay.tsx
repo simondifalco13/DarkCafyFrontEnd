@@ -31,14 +31,47 @@ export const WebCamDisplay = () => {
     const response = await fetch('https://localhost:44392/api/user', requestOptions);
     try {
       const data = await response.json();
-      if(data.firstname!=null && data.lastname!=null && data.favouriteCoffee!=null){
-        var fav=data.favouriteCoffee;
-        var name=data.firstname+" "+data.lastname;
-        SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
-        //return true;
-      }else{
-        SetPhrase("You are not registerd to cafy ! ");
-        //return false;
+      console.log(data);
+      var responseAndStatus=data.response;
+      var user=data.user;
+      if(user==null){
+        if(responseAndStatus.statusMessage=="unregistered"){
+            var registerLink=<a href="/register">Register</a>;
+            //modify
+            SetPhrase("You are not registered to cafy, please register");
+        }
+        if(responseAndStatus.statusMessage=="no face"){
+          SetPhrase("No face detected, please put your mask temporarly.");
+      }
+      }
+      switch(responseAndStatus.statusMessage){
+        case "success":
+          if(user.firstname!=null && user.lastname!=null && user.favouriteCoffee!=null){
+            var fav=user.favouriteCoffee;
+            var name=user.firstname+" "+data.lastname;
+            SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
+          }
+          break;
+        
+        case "false": 
+          SetPhrase("An error occured , try again. If it persists, please contact the admin");
+          break;
+
+        case "unfindable":
+          SetPhrase("Please verify that the engine is on");
+          break;
+        
+        case "unconnectible":
+          SetPhrase("The engine has a problem : contact the admin");
+          break;
+
+        case "unreachable":
+          SetPhrase("Impossible to connect to the engine");
+          break;
+
+        case "failed":
+          SetPhrase("Error while connecting to the engine");
+          break;
       }
     } catch (error) {
       console.log(error);
