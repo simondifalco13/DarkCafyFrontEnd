@@ -171,6 +171,7 @@ export const FormFace = (props:BasicFormProps) => {
       <Grid container spacing={2} justifyContent="center">
         {spinnerState && 
           (<Grid item xs={12} md={12}>
+            <h4>Wait a few minutes before testing.</h4>
             <Spinner/>
           </Grid>)
         }

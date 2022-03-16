@@ -9,8 +9,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea, CardActions, Typography } from '@mui/material';
 import { Navigate, useNavigate } from "react-router-dom";
+import {CallUser} from "../models/CallUser";
+import { fetchTokenResponse } from "./CallComponents/Utils";
+const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
 
-export const WebCamDisplay = () => {
+interface CallUserProps{
+  user : CallUser;
+  setCallUser :(user : CallUser) => void;
+}
+
+export const WebCamDisplay = (props : CallUserProps) => {
   const navigate=useNavigate();
   const webcam = useRef<Webcam>(null);
   const [imgSrc, setImgSrc] = React.useState(null);
@@ -32,6 +40,7 @@ export const WebCamDisplay = () => {
 
     console.log(requestOptions);
     const response = await fetch('https://localhost:44392/api/user', requestOptions);
+    console.log(response);
     try {
       const data = await response.json();
       console.log(data);
@@ -52,6 +61,20 @@ export const WebCamDisplay = () => {
             var fav=user.favouriteCoffee;
             var name=user.firstname+" "+user.lastname;
             SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
+            var { token, userId }= await fetchTokenResponse();
+            console.log(token);
+            console.log(userId);
+            var credential = new AzureCommunicationTokenCredential(token)
+            var recognizedUser : CallUser={
+              displayName: name,
+              userId: userId,
+              credentials: credential
+            };
+            props.setCallUser(recognizedUser);
+            setTimeout(()=>{
+              navigate("/teams");
+              
+            },3000);
           }
           break;
         

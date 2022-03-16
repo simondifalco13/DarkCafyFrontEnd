@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/communication-calling": "^1.4.4",
+    "@azure/communication-common": "^2.0.0",
+    "@azure/communication-react": "^1.1.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/icons-material": "^5.4.1",
