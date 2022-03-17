@@ -30,10 +30,11 @@ const GlobalComposite = (props : CompositeProps) => {
           if(callAdapter!=undefined){
             if(user?.userId!==undefined){
                 callAdapter.removeParticipant(user?.userId);
+                //window.location.href="/cafy";
             }
+            window.location.href="/cafy";
             //REFRESH CAFY
-            navigate("/home");
-            
+            //navigate("/home");
           }
         });
       }, [callAdapter]);
@@ -68,7 +69,8 @@ const GlobalComposite = (props : CompositeProps) => {
                     if(user?.userId!==undefined){
                         createAdapter.removeParticipant(user?.userId);
                     }
-                    navigate("/home");
+                    //navigate("/home");
+                    window.location.href="/cafy";
                 });
                 setCallAdapter(createAdapter);
             }
