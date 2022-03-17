@@ -10,7 +10,7 @@ export class User{
     password: string;
     pictures:string[];
     userId : string;
-    credential : string;
+    credential :any;
     
     constructor(id : string,
         tagid: string,
@@ -22,7 +22,7 @@ export class User{
         password:string,
         pics:string[],
         userId: string,
-        token : string){
+        credential: Object){
         this.id=id;
         this.tagId=tagid;
         this.tagName=tagname;
@@ -33,7 +33,7 @@ export class User{
         this.password=password;
         this.pictures=pics;
         this.userId= userId;
-        this.credential=token
+        this.credential=credential;
     }
 
 }

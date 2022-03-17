@@ -46,3 +46,12 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 changed user in app. tsx
+
+const COMMUNICATION_USER_PREFIX = '8:acs:';
+const PHONE_NUMBER_PREFIX = '4:';
+const TEAMS_DOD_PREFIX = '8:dod:';
+const TEAMS_GCCH_PREFIX = '8:gcch:';
+const TEAMS_USER_PREFIX = '8:origid:';
+const TEAMS_VISITOR_PREFIX = '8:teamsvisitor:';
+
+Call Composite Props => callInvitationUrl

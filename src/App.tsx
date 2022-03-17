@@ -32,7 +32,7 @@ function App() {
     password:"zzzz",
     pictures: [],
     userId :"",
-    credential:""
+    credential: undefined
   });
   return (
     <div className="App">
