@@ -62,8 +62,6 @@ export const WebCamDisplay = (props : CallUserProps) => {
             var name=user.firstname+" "+user.lastname;
             SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
             var { token, userId }= await fetchTokenResponse();
-            console.log(token);
-            console.log(userId);
             var credential = new AzureCommunicationTokenCredential(token)
             var recognizedUser : CallUser={
               displayName: name,

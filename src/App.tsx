@@ -37,7 +37,7 @@ function App() {
   
   return (
     <div className="App">
-          <Router>
+          <Router >
             <Routes>
               <Route path="/cafy" element={<WebCamDisplay user={callUser} setCallUser={setCallUser} />} />
               <Route path="/" element={<Welcome />} />
