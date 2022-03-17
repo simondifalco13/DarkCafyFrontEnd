@@ -4,11 +4,7 @@ import Webcam from "react-webcam";
 import Button from '@mui/material/Button';
 import CoffeeIcon from '@mui/icons-material/Coffee';
 import ResponsiveAppBar from "./ResponsiveAppBar";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import { CardActionArea, CardActions, Typography } from '@mui/material';
-import { Navigate, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import {CallUser} from "../models/CallUser";
 import { fetchTokenResponse } from "./CallComponents/Utils";
 import { GroupCallLocator } from '@azure/communication-calling';
@@ -41,37 +37,24 @@ export const WebCamDisplay = (props : CallUserProps) => {
       body: "\""+img+"\""
     };
 
-    const requestOptionsMeeting = {
-      method: 'GET',
-      headers: { 
-      'Access-Control-Allow-Origin':'*',
-      "Cross-Origin":"*",
-      "Access-Control-Allow-Credentials": "true",
-      "Access-Control-Allow-Methods": "*"
-    },
-    };
 
     const response = await fetch('https://localhost:44392/api/user', requestOptions);
     try {
       const data = await response.json();
       var responseAndStatus=data.response;
       var user=data.user;
-      if(user==null){
-        if(responseAndStatus.statusMessage=="unregistered"){
+      if(user===null){
+        if(responseAndStatus.statusMessage==="unregistered"){
             setNeedRegister(true);
             SetPhrase("You are not registered to cafy, please register");
         }
-        if(responseAndStatus.statusMessage=="no face"){
+        if(responseAndStatus.statusMessage==="no face"){
           SetPhrase("No face detected, think to take of your mask or to put it under your mouth temporarly");
       }
       }
       switch(responseAndStatus.statusMessage){
         case "success":
-          if(user.firstname!=null && user.lastname!=null && user.favouriteCoffee!=null){
-            const responseMeeting = await fetch('https://localhost:44392/api/meeting/id', requestOptionsMeeting);
-            console.log(responseMeeting);
-            const meetingJson=await responseMeeting.json();
-            var meetingId=meetingJson.meetingId;
+          if(user.firstname!==null && user.lastname!==null && user.favouriteCoffee!==null){
             var fav=user.favouriteCoffee;
             var name=user.firstname+" "+user.lastname;
             SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
@@ -83,13 +66,11 @@ export const WebCamDisplay = (props : CallUserProps) => {
               credentials: credential
             };
             props.setCallUser(recognizedUser);
-            if(meetingId!=="" && meetingId!=null){
-              props.setGroupId({groupId: meetingId});
-            }
             setTimeout(()=>{
-              navigate("/teams");
+              SetPhrase("Hello do you want a coffee ? ");
               
-            },3000);
+            },4000);
+            startCallTeams();
           }
           break;
         
@@ -125,8 +106,21 @@ export const WebCamDisplay = (props : CallUserProps) => {
       return s[0].toUpperCase() + s.slice(1);
   }
 
-  function startCallTeams(){
-    
+  async function startCallTeams(){
+    const requestOptionsMeeting = {
+      method: 'GET'
+    };
+    const responseMeeting = await fetch('https://localhost:44392/api/meeting/id', requestOptionsMeeting);
+    const meetingJson=await responseMeeting.json();
+    var meetingId=meetingJson.meetingId;
+    if(meetingId!=="" && meetingId!==null){
+      props.setGroupId({groupId: meetingId});
+      console.log(meetingId);
+    }
+    setTimeout(()=>{
+      navigate("/teams");
+      
+    },3000);
   }
 
 

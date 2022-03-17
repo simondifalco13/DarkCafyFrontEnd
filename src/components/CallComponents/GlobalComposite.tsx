@@ -21,6 +21,18 @@ const GlobalComposite = (props : CompositeProps) => {
     const [callLocator, setCallLocator] = useState<GroupLocator | TeamsMeetingLinkLocator>(props.groupId);
     const [user,setUser]=useState<CallUser>();
 
+    useEffect(() => {
+        window.addEventListener("popstate", (event) => {
+          if(callAdapter!=undefined){
+            console.log("HERE");
+            if(user?.userId!==undefined){
+                callAdapter.removeParticipant(user?.userId);
+            }
+            navigate("/cafy");
+          }
+        });
+      }, [callAdapter]);
+
     useEffect( () =>{
         //maybe it's their first time making a call in that case we need to create a userid and token
         // and if  not we need to create a token for a specified userId
@@ -48,7 +60,7 @@ const GlobalComposite = (props : CompositeProps) => {
                     locator: callLocator 
                 });
                 createAdapter.on('callEnded', () => {
-                    navigate("/home");
+                    navigate("/cafy");
                 });
                 setCallAdapter(createAdapter);
             }
@@ -56,6 +68,8 @@ const GlobalComposite = (props : CompositeProps) => {
         
     },[user]);
 
+
+    console.log(user?.userId);
     return(<div style={{height: '100vh'}}>
         {callAdapter && <CallComposite adapter={callAdapter} />}
     </div>)
