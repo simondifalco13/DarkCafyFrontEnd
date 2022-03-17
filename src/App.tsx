@@ -33,19 +33,19 @@ function App() {
     displayName:""
   });
 
-  const [groupId,setGroupId]=React.useState<GroupLocator>({groupId: "7662bd00-a3a0-11ec-971a-6f00e64f58ff"});
+  const [groupId,setGroupId]=React.useState<GroupLocator>({groupId: ""});
   
   return (
     <div className="App">
           <Router >
             <Routes>
-              <Route path="/cafy" element={<WebCamDisplay user={callUser} setCallUser={setCallUser} />} />
+              <Route path="/cafy" element={<WebCamDisplay user={callUser} setCallUser={setCallUser} setGroupId={setGroupId}/>} />
               <Route path="/" element={<Welcome />} />
               <Route path="/home" element={<Welcome />} />
               <Route path="/admin/esp" element={<FormEsp />} />
               <Route path="/register" element={<FormRegister user={user} setUser={setUser} />}/>
               <Route path="/register/face" element={<FormFace user={user} setUser={setUser} />}/>
-              <Route path="/teams" element={<GlobalComposite groupId={groupId} user={callUser} />}/>
+              <Route path="/teams" element={<GlobalComposite groupId={groupId} user={callUser}  />}/>
             </Routes>
           </Router>
     </div>

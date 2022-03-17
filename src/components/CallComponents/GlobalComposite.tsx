@@ -45,7 +45,7 @@ const GlobalComposite = (props : CompositeProps) => {
                     userId : {communicationUserId : props.user.userId},
                     displayName,
                     credential : user.credentials,
-                    locator: callLocator //teamsmeetinglink or uuid
+                    locator: callLocator 
                 });
                 createAdapter.on('callEnded', () => {
                     navigate("/home");
@@ -53,22 +53,7 @@ const GlobalComposite = (props : CompositeProps) => {
                 setCallAdapter(createAdapter);
             }
         })();
-        //if(user!==undefined){
-            // const createAdapter = async (defineduser:  CallUser): Promise<void> => {
-            //     setCallAdapter(
-            //         await createAzureCommunicationCallAdapter({
-            //             userId : {communicationUserId : props.user.userId},
-            //             displayName,
-            //             credential : defineduser.credentials,
-            //             locator: callLocator //teamsmeetinglink or uuid
-            //         })
-            //     );
-            // };
-            
-            // createAdapter(props.user);
-           
-            
-       // }
+        
     },[user]);
 
     return(<div style={{height: '100vh'}}>

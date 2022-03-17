@@ -11,11 +11,14 @@ import { CardActionArea, CardActions, Typography } from '@mui/material';
 import { Navigate, useNavigate } from "react-router-dom";
 import {CallUser} from "../models/CallUser";
 import { fetchTokenResponse } from "./CallComponents/Utils";
+import { GroupCallLocator } from '@azure/communication-calling';
 const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
+
 
 interface CallUserProps{
   user : CallUser;
   setCallUser :(user : CallUser) => void;
+  setGroupId :(groupId : GroupCallLocator) => void;
 }
 
 export const WebCamDisplay = (props : CallUserProps) => {
@@ -38,12 +41,19 @@ export const WebCamDisplay = (props : CallUserProps) => {
       body: "\""+img+"\""
     };
 
-    console.log(requestOptions);
+    const requestOptionsMeeting = {
+      method: 'GET',
+      headers: { 
+      'Access-Control-Allow-Origin':'*',
+      "Cross-Origin":"*",
+      "Access-Control-Allow-Credentials": "true",
+      "Access-Control-Allow-Methods": "*"
+    },
+    };
+
     const response = await fetch('https://localhost:44392/api/user', requestOptions);
-    console.log(response);
     try {
       const data = await response.json();
-      console.log(data);
       var responseAndStatus=data.response;
       var user=data.user;
       if(user==null){
@@ -58,6 +68,10 @@ export const WebCamDisplay = (props : CallUserProps) => {
       switch(responseAndStatus.statusMessage){
         case "success":
           if(user.firstname!=null && user.lastname!=null && user.favouriteCoffee!=null){
+            const responseMeeting = await fetch('https://localhost:44392/api/meeting/id', requestOptionsMeeting);
+            console.log(responseMeeting);
+            const meetingJson=await responseMeeting.json();
+            var meetingId=meetingJson.meetingId;
             var fav=user.favouriteCoffee;
             var name=user.firstname+" "+user.lastname;
             SetPhrase("Hello "+name+" ,your favourite "+capitalize(fav)+" is going to be prepared");
@@ -69,6 +83,9 @@ export const WebCamDisplay = (props : CallUserProps) => {
               credentials: credential
             };
             props.setCallUser(recognizedUser);
+            if(meetingId!=="" && meetingId!=null){
+              props.setGroupId({groupId: meetingId});
+            }
             setTimeout(()=>{
               navigate("/teams");
               
@@ -104,9 +121,14 @@ export const WebCamDisplay = (props : CallUserProps) => {
   }
 
   function capitalize(s : string)
-{
-    return s[0].toUpperCase() + s.slice(1);
-}
+  {
+      return s[0].toUpperCase() + s.slice(1);
+  }
+
+  function startCallTeams(){
+    
+  }
+
 
   const capture = React.useCallback(() => {
     if(webcam.current?.stream!=null){
@@ -115,12 +137,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
         var base64=getBase64WithoutHeaders(imageSrc);
         SetPhrase("Loading...");
         Request(base64);
-        // var result=await Request(base64);
-        // if(result){
-        //    //SI REQUEST RENVOIT TRUE
-        //   setIsTaken(true);
-        // }
-        //AFFICHER BOUTONS OPTIONNELS
+       
       }else{
         SetPhrase("Your camera has not been authorized.");
       }
