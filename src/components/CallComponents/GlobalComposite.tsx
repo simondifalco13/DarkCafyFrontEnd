@@ -9,6 +9,10 @@ import { useNavigate } from 'react-router-dom';
 
 const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
 
+function refreshPage() {
+    window.location.reload();
+}
+
 interface CompositeProps{
     user : CallUser;
     groupId: GroupCallLocator;
@@ -24,11 +28,12 @@ const GlobalComposite = (props : CompositeProps) => {
     useEffect(() => {
         window.addEventListener("popstate", (event) => {
           if(callAdapter!=undefined){
-            console.log("HERE");
             if(user?.userId!==undefined){
                 callAdapter.removeParticipant(user?.userId);
             }
-            navigate("/cafy");
+            //REFRESH CAFY
+            navigate("/home");
+            
           }
         });
       }, [callAdapter]);
@@ -60,7 +65,10 @@ const GlobalComposite = (props : CompositeProps) => {
                     locator: callLocator 
                 });
                 createAdapter.on('callEnded', () => {
-                    navigate("/cafy");
+                    if(user?.userId!==undefined){
+                        createAdapter.removeParticipant(user?.userId);
+                    }
+                    navigate("/home");
                 });
                 setCallAdapter(createAdapter);
             }

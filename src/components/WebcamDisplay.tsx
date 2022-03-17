@@ -8,6 +8,9 @@ import {useNavigate } from "react-router-dom";
 import {CallUser} from "../models/CallUser";
 import { fetchTokenResponse } from "./CallComponents/Utils";
 import { GroupCallLocator } from '@azure/communication-calling';
+import { Box, Grid } from "@mui/material";
+import GlobalComposite from "./CallComponents/GlobalComposite";
+import { maxWidth, width } from "@mui/system";
 const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
 
 
@@ -24,6 +27,8 @@ export const WebCamDisplay = (props : CallUserProps) => {
   const [isTaken, setIsTaken] = React.useState(false);
   const [phrase,SetPhrase]=React.useState("Hello do you want a coffee ? ");
   const [needRegister, setNeedRegister]=React.useState(false);
+  const [showCall,setShowCall]=React.useState(false);
+  const [groupId,setGroupIdLocal]=React.useState({groupId :' '});
 
   async function Request(img:string) {
     const requestOptions = {
@@ -115,12 +120,13 @@ export const WebCamDisplay = (props : CallUserProps) => {
     var meetingId=meetingJson.meetingId;
     if(meetingId!=="" && meetingId!==null){
       props.setGroupId({groupId: meetingId});
-      console.log(meetingId);
+      setGroupIdLocal({groupId: meetingId});
     }
-    setTimeout(()=>{
-      navigate("/teams");
+    setShowCall(true);
+    // setTimeout(()=>{
+    //   navigate("/teams");
       
-    },3000);
+    // },3000);
   }
 
 
@@ -152,28 +158,41 @@ export const WebCamDisplay = (props : CallUserProps) => {
   return (
     <>
       <ResponsiveAppBar/>
-      <h2>{phrase}<CoffeeIcon fontSize="large"/></h2>
-      {needRegister && 
-        (
-          <div>
-            <br/>
-            <Button variant="contained" onClick={()=>navigate("/register")}>Register</Button>
-          </div>
-        )
-      }
-      <Webcam audio={false} ref={webcam} screenshotFormat="image/jpeg" height={"420"} />
+      <Grid container spacing={2} justifyContent="center">
+        <Grid item xs={12} md={12}>
+          <h2>{phrase}<CoffeeIcon fontSize="large"/></h2>
+        </Grid>
+        {needRegister && 
+          (
+            <Grid item xs={12} md={12}>
+              <Button variant="contained" onClick={()=>navigate("/register")}>Register</Button>
+            </Grid>
+          )
+        }
+        <Grid item xs={12} md={6}>
+          <Webcam audio={false} ref={webcam} screenshotFormat="image/jpeg" height={"420"} />
+            {imgSrc && (
+              <img
+                src={imgSrc}
+              />
+            )}
+        </Grid>
+        {showCall && (
+            <Grid item xs={12} md={6}>
+                <GlobalComposite groupId={groupId} user={props.user}/>
+          </Grid>
+        )}
+        
+        
+        {!isTaken && (
+          <Grid item xs={12} md={12}>
+              <Button variant="contained" onClick={capture}>Take a coffee</Button>
+          </Grid>
+          )
+        }
+       
+      </Grid>
       <br/>
-      {!isTaken && 
-        <Button variant="contained" onClick={capture}>Take a coffee</Button>
-      }
-      {isTaken && 
-        <Button variant="contained" >Reserve a room</Button>
-      }
-      {imgSrc && (
-        <img
-          src={imgSrc}
-        />
-      )}
     </>
   );
 };
