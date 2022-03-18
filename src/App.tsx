@@ -45,7 +45,6 @@ function App() {
               <Route path="/admin/esp" element={<FormEsp />} />
               <Route path="/register" element={<FormRegister user={user} setUser={setUser} />}/>
               <Route path="/register/face" element={<FormFace user={user} setUser={setUser} />}/>
-              <Route path="/teams" element={<GlobalComposite groupId={groupId} user={callUser}  />}/>
             </Routes>
           </Router>
     </div>

@@ -29,6 +29,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
   const [needRegister, setNeedRegister]=React.useState(false);
   const [showCall,setShowCall]=React.useState(false);
   const [groupId,setGroupIdLocal]=React.useState({groupId :' '});
+  const [callRunning, setCallRunning]=React.useState(false);
 
   async function Request(img:string) {
     const requestOptions = {
@@ -51,9 +52,11 @@ export const WebCamDisplay = (props : CallUserProps) => {
       if(user===null){
         if(responseAndStatus.statusMessage==="unregistered"){
             setNeedRegister(true);
+            setIsTaken(false);
             SetPhrase("You are not registered to cafy, please register");
         }
         if(responseAndStatus.statusMessage==="no face"){
+          setIsTaken(false);
           SetPhrase("No face detected, think to take of your mask or to put it under your mouth temporarly");
       }
       }
@@ -75,7 +78,9 @@ export const WebCamDisplay = (props : CallUserProps) => {
               SetPhrase("Hello do you want a coffee ? ");
               
             },4000);
-            startCallTeams();
+            if(!callRunning){
+              startCallTeams();
+            }
           }
           break;
         
@@ -101,6 +106,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
       }
     } catch (error) {
       console.log(error);
+      setIsTaken(false);
       SetPhrase("No face detected, think to take of your mask or to put it under your mouth temporarly");
     }
 
@@ -122,17 +128,16 @@ export const WebCamDisplay = (props : CallUserProps) => {
       props.setGroupId({groupId: meetingId});
       setGroupIdLocal({groupId: meetingId});
     }
+    setCallRunning(true);
     setShowCall(true);
-    // setTimeout(()=>{
-    //   navigate("/teams");
-      
-    // },3000);
+    setIsTaken(false);
   }
 
 
   const capture = React.useCallback(() => {
     if(webcam.current?.stream!=null){
       if(webcam.current!=null){
+        setIsTaken(true);
         const imageSrc = webcam.current.getScreenshot() ;
         var base64=getBase64WithoutHeaders(imageSrc);
         SetPhrase("Loading...");
@@ -179,7 +184,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
         </Grid>
         {showCall && (
             <Grid item xs={12} md={6}>
-                <GlobalComposite groupId={groupId} user={props.user}/>
+                <GlobalComposite groupId={groupId} user={props.user} setCallRunning={setCallRunning}/>
           </Grid>
         )}
         
