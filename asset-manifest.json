@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/DarkCafyFrontEnd/static/css/main.7ae08dcd.css",
+    "main.js": "/DarkCafyFrontEnd/static/js/main.5d5ac2a8.js",
+    "static/js/787.edec9ba0.chunk.js": "/DarkCafyFrontEnd/static/js/787.edec9ba0.chunk.js",
+    "index.html": "/DarkCafyFrontEnd/index.html",
+    "main.7ae08dcd.css.map": "/DarkCafyFrontEnd/static/css/main.7ae08dcd.css.map",
+    "main.5d5ac2a8.js.map": "/DarkCafyFrontEnd/static/js/main.5d5ac2a8.js.map",
+    "787.edec9ba0.chunk.js.map": "/DarkCafyFrontEnd/static/js/787.edec9ba0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7ae08dcd.css",
+    "static/js/main.5d5ac2a8.js"
+  ]
+}
