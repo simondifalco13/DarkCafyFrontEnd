@@ -35,29 +35,29 @@ export const Welcome=()=>{
         <>
             <ResponsiveAppBar/>
             <Grid container  spacing={2} justifyContent="center">
-                <Grid item xs={12}>
+                <Grid item xs={12} >
                     <h2>Welcome to Dark Cafy</h2>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                     <h3>Goal</h3>
                     <p> For our internship the M.I.C gave us
                         one of the best challenge : a coffee machine with facial recognition.
                     </p>
                     <img src="./images/mic.jpg" height="200px" />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                     <h3>Engine</h3>
                     <p> Delonghi Dynamica Plus ECAM370.95.T<CoffeeMakerIcon/></p>
                     <img src="./images/delonghi.jpg" height="200px"/>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} md={4}>
                     <h3>How to ?</h3>
                     <ol>
                         <li>Register to our services : <Button onClick={handleRegister}>Register</Button></li>
                         <li>Try Dark Cafy : <Button onClick={handleCafy}>Cafy</Button></li>
                     </ol>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={4}>
                     <h2>Who we are ?</h2>
                 </Grid>
                 {/*PRESENTATION*/}
