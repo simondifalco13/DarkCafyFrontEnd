@@ -37,7 +37,7 @@ function App() {
   
   return (
     <div className="App">
-          <Router >
+          <Router basename={process.env.PUBLIC_URL}>
             <Routes>
               <Route path="/cafy" element={<WebCamDisplay user={callUser} setCallUser={setCallUser} setGroupId={setGroupId}/>} />
               <Route path="/" element={<Welcome />} />
@@ -70,17 +70,6 @@ async function init() {
   }
 }
 
-
-function drawInCanvas(cnv : any,vid :any){
-  var context = cnv.getContext('2d');
-  context.drawImage(vid, 0, 0, 640, 360);
-}
-
-function getImageInBase64(cnv : any){
-   var imageBase64=cnv.toDataURL('image/jpeg');
-  imageBase64 = imageBase64.replace("data:image/jpeg;base64,", "");
-  return imageBase64;
-}
 
 
 
