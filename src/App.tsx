@@ -64,7 +64,6 @@ const constraints = {
 async function init() {
   try {
       const stream = await navigator.mediaDevices.getUserMedia(constraints);
-      //handleSuccess(stream);
   } catch (e) {
      console.log(e);
   }
