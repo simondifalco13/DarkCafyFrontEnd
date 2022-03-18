@@ -9,16 +9,12 @@ import { useNavigate } from 'react-router-dom';
 
 const { AzureCommunicationTokenCredential } = require('@azure/communication-common');
 
-function refreshPage() {
-    window.location.reload();
-}
 
 interface CompositeProps{
     user : CallUser;
     groupId: GroupCallLocator;
     setCallRunning :(callRunning : boolean) => void;
 }
-//1ere personne qui commence un call, créér un call la seconde le rejoint
 const GlobalComposite  = (props : CompositeProps)  => {
     const navigate=useNavigate();
     const displayName = props.user.displayName;

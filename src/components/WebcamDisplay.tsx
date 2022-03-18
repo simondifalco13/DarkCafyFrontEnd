@@ -85,6 +85,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
           break;
         
         case "false": 
+          setIsTaken(false);
           SetPhrase("An error occured , try again. If it persists, please contact the admin");
           break;
 
@@ -103,6 +104,7 @@ export const WebCamDisplay = (props : CallUserProps) => {
         case "failed":
           SetPhrase("Error while connecting to the engine");
           break;
+        
       }
     } catch (error) {
       console.log(error);
